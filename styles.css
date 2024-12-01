@@ -1,0 +1,194 @@
+/* styles.css */
+
+/* Set the overall background color to very light green */
+body {
+    background-color: #f9f9e5;
+    /* Very light green */
+}
+
+/* Navigation bar */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    background-color: #7dc4ff;
+    box-shadow: 0 2px 5px #a92ed3;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Transparent header */
+.stApp>header {
+    background-color: transparent;
+}
+
+/* Gradient background for the app */
+.stApp {
+    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: auto;
+    background: linear-gradient(315deg, #4f2991 3%, #7dc4ff 38%, #36cfcc 68%, #a92ed3 98%);
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    background-attachment: fixed;
+}
+
+/* Keyframes for gradient animation */
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Main title section */
+.main-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 2rem 0 0.5rem 0;
+    padding: 0 2rem;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #996B4D;
+    margin-bottom: 3rem;
+    padding: 0 2rem;
+}
+
+/* Form section */
+.form-section {
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+/* Input styling */
+.stSelectbox,
+.stDateInput {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+/* Tooltip styling */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.info-icon {
+    color: #6c757d;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 125%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.weather-item {
+    display: flex;
+    align-items: center;
+    /* Aligns items vertically */
+    gap: 30px;
+    /* Adds spacing between the label and value */
+}
+
+.weather-label {
+    font-weight: bold;
+}
+
+.weather-value {
+    font-size: 16px;
+}
+
+.weather-header {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+    margin-left: 40px;
+    margin-top: 45px;
+    width: 300px;
+    /* Set a shorter width */
+}
+
+.weather-report {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    margin-left: 40px;
+    width: 300px;
+    /* Set a shorter width */
+}
+
+.weather-item {
+    display: flex;
+    justify-content: space-between;
+    /* Aligns label and value */
+    margin-bottom: 10px;
+    /* Adds space between items */
+}
+
+.weather-label {
+    font-weight: bold;
+}
+
+.weather-value {
+    color: #333;
+    /* Adjust color as needed */
+}
