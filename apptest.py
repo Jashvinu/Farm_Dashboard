@@ -6,6 +6,7 @@ from indices.dwsi_map import calculate_and_display_map as calculate_dwsi
 from indices.ndmi_map import calculate_and_display_map as calculate_ndmi
 from indices.ndni_map import calculate_and_display_map as calculate_ndni
 from indices.gndvi_map import calculate_and_display_map as calculate_gndvi
+from indices.ph_map import calculate_and_display_ph_map as calculate_ph
 from weather import get_weather_data
 import ee
 import matplotlib.pyplot as plt
@@ -98,7 +99,7 @@ st.markdown("""
     <div class="nav-container">
         <div class="logo" style="display: flex; align-items: center;">
             <img src="assets/logo.png" alt="wrkFarm Logo" style="height: 40px; margin-right: 10px;">
-            <span>wrkFarm</span>
+            <span style="color: black;">wrkFarm</span>
         </div>
         <div style="display: flex; gap: 2rem;">
             <span>Dashboard</span>
@@ -126,7 +127,7 @@ st.markdown("""
 
 
 # Create a container for the form and weather report
-form_col, weather_col = st.columns([1, 1])
+form_col, weather_col = st.columns([.3, 1])
 
 with form_col:
     # Farm Selection
@@ -188,6 +189,8 @@ try:
                                                 end_date.year, month_names[end_month_index], end_date.day)
                 gndvi_map_html = calculate_gndvi(poi, start_date.year, month_names[start_month_index], start_date.day,
                                                     end_date.year, month_names[end_month_index], end_date.day)
+                #ph_map_html = calculate_ph(poi, start_date.year, month_names[start_month_index], start_date.day,
+                                               # end_date.year, month_names[end_month_index], end_date.day)
             else:
                 st.error("Invalid month index for the selected dates.")
         except Exception as e:
@@ -218,10 +221,12 @@ try:
                                     end_date.year, month_names[end_date.month - 1], end_date.day)
     gndvi_map_html = calculate_gndvi(poi, start_date.year, month_names[start_date.month - 1], start_date.day,
                                     end_date.year, month_names[end_date.month - 1], end_date.day)
+    #ph_map_html = calculate_ph(poi, start_date.year, month_names[start_date.month - 1], start_date.day,
+                                    #end_date.year, month_names[end_date.month - 1], end_date.day)
 
     # Display maps in two rows
-    row1_cols = st.columns(3, gap="small")
-    row2_cols = st.columns(3, gap="small")
+    row1_cols = st.columns(4, gap="small")
+    row2_cols = st.columns(4, gap="small")
 
     # First row of maps
     with row1_cols[0]:
@@ -235,7 +240,7 @@ try:
                 </span>
             </div>
         ''', unsafe_allow_html=True)
-        st.components.v1.html(msavi_map_html, height=350, width=450)
+        st.components.v1.html(msavi_map_html, height=200, width=350)
         st.markdown('<div class="recommendations">', unsafe_allow_html=True)
         st.markdown("**Key Insights:**")
         st.markdown("• Higher values indicate better vegetation coverage")
@@ -254,7 +259,7 @@ try:
                 </span>
             </div>
         ''', unsafe_allow_html=True)
-        st.components.v1.html(ndvi_map_html, height=350, width=450)
+        st.components.v1.html(ndvi_map_html, height=200, width=350)
         st.markdown('<div class="recommendations">', unsafe_allow_html=True)
         st.markdown("**Key Insights:**")
         st.markdown("• Green zones indicate healthy vegetation")
@@ -273,7 +278,7 @@ try:
                 </span>
             </div>
         ''', unsafe_allow_html=True)
-        st.components.v1.html(dwsi_map_html, height=350, width=450)
+        st.components.v1.html(dwsi_map_html, height=200, width=350)
         st.markdown('<div class="recommendations">', unsafe_allow_html=True)
         st.markdown("**Key Insights:**")
         st.markdown("• Higher values indicate water stress")
@@ -283,7 +288,7 @@ try:
         st.markdown('</div>', unsafe_allow_html=True)
 
     # Second row of maps
-    with row2_cols[0]:
+    with row1_cols[3]:
         st.markdown('<div class="map-container">', unsafe_allow_html=True)
         st.markdown('''
             <div class="map-header">
@@ -293,7 +298,7 @@ try:
                 </span>
             </div>
         ''', unsafe_allow_html=True)
-        st.components.v1.html(ndmi_map_html, height=350, width=450)
+        st.components.v1.html(ndmi_map_html, height=200, width=350)
         st.markdown('<div class="recommendations">', unsafe_allow_html=True)
         st.markdown("**Key Insights:**")
         st.markdown("• Blue indicates good moisture levels")
@@ -302,7 +307,7 @@ try:
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    with row2_cols[1]:
+    with row2_cols[0]:
         st.markdown('<div class="map-container">', unsafe_allow_html=True)
         st.markdown('''
             <div class="map-header">
@@ -312,7 +317,7 @@ try:
                 </span>
             </div>
         ''', unsafe_allow_html=True)
-        st.components.v1.html(ndni_map_html, height=350, width=450)
+        st.components.v1.html(ndni_map_html, height=200, width=350)
         st.markdown('<div class="recommendations">', unsafe_allow_html=True)
         st.markdown("**Key Insights:**")
         st.markdown("• Higher values show good nitrogen levels")
@@ -321,7 +326,7 @@ try:
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    with row2_cols[2]:
+    with row2_cols[1]:
         st.markdown('<div class="map-container">', unsafe_allow_html=True)
         st.markdown('''
             <div class="map-header">
@@ -331,7 +336,7 @@ try:
                 </span>
             </div>
         ''', unsafe_allow_html=True)
-        st.components.v1.html(gndvi_map_html, height=350, width=450)
+        st.components.v1.html(gndvi_map_html, height=200, width=350)
         st.markdown('<div class="recommendations">', unsafe_allow_html=True)
         st.markdown("**Key Insights:**")
         st.markdown("• Shows photosynthetic efficiency")
@@ -339,6 +344,23 @@ try:
         st.markdown("• Monitor plant development")
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
+    """
+    with row2_cols[2]:
+        st.markdown('<div class="map-container">', unsafe_allow_html=True)
+        st.markdown('''
+            <div class="map-header">
+                💧 pH (pH)
+            </div>
+        ''', unsafe_allow_html=True)
+        st.components.v1.html(ph_map_html, height=200, width=350)
+        st.markdown('<div class="recommendations">', unsafe_allow_html=True)
+        st.markdown("**Key Insights:**")
+        st.markdown("• Blue indicates acidic conditions")
+        st.markdown("• Green shows neutral conditions")
+        st.markdown("• Red indicates alkaline conditions")
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    """
 
 except Exception as e:
     st.error(f"An error occurred: {e}")
