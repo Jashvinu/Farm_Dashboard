@@ -5,8 +5,18 @@ import ee
 import pandas as pd
 import ee_auth
 import os
+import json
+from dotenv import load_dotenv
+
 # Initialize Earth Engine
+<<<<<<< HEAD
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "indices/wrkfarm-415118-3652909893e8.json"
+=======
+load_dotenv()
+creds_text = os.getenv("CREDS")
+creds_json = json.loads(creds_text)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = creds_json
+>>>>>>> 8102a8798cd7714ebdf71206587cc812e6cc2ebf
 ee.Initialize()
 
 # Define your point of interest (farmland)

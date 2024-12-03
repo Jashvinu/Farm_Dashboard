@@ -1,7 +1,10 @@
 import ee
+from dotenv import load_dotenv
+import os 
 
+project_id = os.getenv("EE_PROJECT")
 try:
-    ee.Initialize(project='wrkfarm-415118')
+    ee.Initialize(project=project_id)
 except Exception as e:
     ee.Authenticate()
-    ee.Initialize(project='wrkfarm-415118')
+    ee.Initialize(project=project_id)

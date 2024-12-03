@@ -3,16 +3,18 @@ import folium
 import ee
 import os
 import indices.ee_auth
+from dotenv import load_dotenv
 
+project_id = os.getenv("EE_PROJECT")
 
 # Initialize Earth Engine
 import ee
 
 try:
-    ee.Initialize(project='wrkfarm-415118')
+    ee.Initialize(project=project_id)
 except Exception as e:
     ee.Authenticate()
-    ee.Initialize(project='wrkfarm-415118')
+    ee.Initialize(project=project_id)
 
 
 # Define your specific Point of Interest (POI) as an EE Geometry
