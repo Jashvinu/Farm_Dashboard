@@ -1,7 +1,7 @@
 import os
 import ee
 from google.cloud import bigquery
-from indexes_tables import get_indices_data
+from database.data_management.indexes_tables import get_indices_data
 from datetime import datetime, timedelta
 import ee_auth
 import pandas as pd 

@@ -14,7 +14,7 @@ import pandas as pd
 import os
 import base64
 from pathlib import Path
-from indices.indexes_tables import get_indices_data
+from database.data_management.indexes_tables import get_indices_data
 
 st.set_page_config(layout="wide")
 
