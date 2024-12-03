@@ -1,4 +1,3 @@
-
 from google.cloud import bigquery
 from indexes_tables import get_indices_data
 from datetime import datetime, timedelta
@@ -7,7 +6,7 @@ import pandas as pd
 import ee_auth
 import os
 # Initialize Earth Engine
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/jashvinuyeshwanth/Satellite_output/new_App/indices/wrkfarm-415118-3652909893e8.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "indices/wrkfarm-415118-3652909893e8.json"
 ee.Initialize()
 
 # Define your point of interest (farmland)
@@ -33,19 +32,22 @@ table_id = 'wrkfarm-415118.Major_indices.indices_web'
 
 current_date = ee.Date(datetime.now().strftime('%Y-%m-%d'))
 
+# Load the existing data from the BigQuery table
+table = client.get_table(table_id)
+existing_data = client.list_rows(table).to_dataframe()
+
+# Get the latest date from the existing data
+latest_date = existing_data['date'].max()  # Assuming 'date' is the column name
+latest_date = ee.Date(latest_date)
+
 # Define the start and end dates for the new data
-new_start_date = ee.Date(start_date.advance(1, 'day'))
-new_end_date = current_date
+new_start_date = latest_date.advance(5, 'day')  # Start date is 5 days after the latest date
+new_end_date = current_date  # End date is the current date
 print("New start date:", new_start_date)
 print("New end date:", new_end_date)
 
 # Get the new indices data
-
 new_df = get_indices_data(poi, new_start_date, new_end_date)
-
-# Load the existing data from the BigQuery table
-table = client.get_table(table_id)
-existing_data = client.list_rows(table).to_dataframe()
 
 # Concatenate the new and existing data
 df = new_df

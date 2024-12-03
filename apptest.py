@@ -14,6 +14,7 @@ import pandas as pd
 import os
 import base64
 from pathlib import Path
+from indices.indexes_tables import get_indices_data
 
 st.set_page_config(layout="wide")
 
@@ -123,7 +124,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# Form Section with Weather
+start_date = ee.Date(datetime.now().strftime('%Y-%m-%d')).advance(-30, 'day')
+end_date = ee.Date(datetime.now().strftime('%Y-%m-%d'))
+
+# Get the indices data
+indices_df = get_indices_data(poi, start_date, end_date)
+
+# Display the line chart for NDVI, GNDVI, and NDMI
+
 
 
 # Create a container for the form and weather report
@@ -199,15 +207,6 @@ try:
         st.error("Please select a valid start and end date.")
 
     # Add JavaScript for periodic refresh
-    st.markdown("""
-        <script>
-            function refreshPage() {
-                location.reload();
-            }
-            // Refresh every hour (3600000 milliseconds)
-            setInterval(refreshPage, 3600000);
-        </script>
-    """, unsafe_allow_html=True)
 
     msavi_map_html = calculate_msavi(poi, start_date.year, month_names[start_date.month - 1], start_date.day, 
                                        end_date.year, month_names[end_date.month - 1], end_date.day)
@@ -224,8 +223,9 @@ try:
     #ph_map_html = calculate_ph(poi, start_date.year, month_names[start_date.month - 1], start_date.day,
                                     #end_date.year, month_names[end_date.month - 1], end_date.day)
 
+    
     # Display maps in two rows
-    row1_cols = st.columns(4, gap="small")
+    row1_cols = st.columns([.3, .3, .7], gap="small")
     row2_cols = st.columns(4, gap="small")
 
     # First row of maps
@@ -267,8 +267,22 @@ try:
         st.markdown("• Monitor for crop stress patterns")
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-
     with row1_cols[2]:
+        index_options = ['ndvi', 'gndvi', 'ndmi', 'dswi', 'ndni', 'evi2']
+        selected_index = st.selectbox("Select an Index", index_options)
+
+        # Display the mean, min, and max values for the selected index
+        if selected_index:
+            mean_value = indices_df[f'{selected_index}_mean'].iloc[-1]  # Get the latest mean value
+            min_value = indices_df[f'{selected_index}_min'].iloc[-1]    # Get the latest min value
+            max_value = indices_df[f'{selected_index}_max'].iloc[-1]    # Get the latest max value
+
+            # Display the line chart for NDVI, GNDVI, and NDMI with min and max values
+            chart_data = indices_df.set_index('date')[[f'{selected_index}_mean', f'{selected_index}_min', f'{selected_index}_max']]
+            #chart_data = chart_data[['date', f'{selected_index}_mean', f'{selected_index}_min', f'{selected_index}_max']]
+            st.line_chart(chart_data)
+
+    with row2_cols[0]:
         st.markdown('<div class="map-container">', unsafe_allow_html=True)
         st.markdown('''
             <div class="map-header">
@@ -288,7 +302,7 @@ try:
         st.markdown('</div>', unsafe_allow_html=True)
 
     # Second row of maps
-    with row1_cols[3]:
+    with row2_cols[1]:
         st.markdown('<div class="map-container">', unsafe_allow_html=True)
         st.markdown('''
             <div class="map-header">
@@ -307,7 +321,7 @@ try:
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    with row2_cols[0]:
+    with row2_cols[2]:
         st.markdown('<div class="map-container">', unsafe_allow_html=True)
         st.markdown('''
             <div class="map-header">
@@ -326,7 +340,7 @@ try:
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    with row2_cols[1]:
+    with row2_cols[3]:
         st.markdown('<div class="map-container">', unsafe_allow_html=True)
         st.markdown('''
             <div class="map-header">
@@ -344,23 +358,9 @@ try:
         st.markdown("• Monitor plant development")
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
-    """
-    with row2_cols[2]:
-        st.markdown('<div class="map-container">', unsafe_allow_html=True)
-        st.markdown('''
-            <div class="map-header">
-                💧 pH (pH)
-            </div>
-        ''', unsafe_allow_html=True)
-        st.components.v1.html(ph_map_html, height=200, width=350)
-        st.markdown('<div class="recommendations">', unsafe_allow_html=True)
-        st.markdown("**Key Insights:**")
-        st.markdown("• Blue indicates acidic conditions")
-        st.markdown("• Green shows neutral conditions")
-        st.markdown("• Red indicates alkaline conditions")
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-    """
+
+    
+
 
 except Exception as e:
     st.error(f"An error occurred: {e}")
@@ -373,5 +373,10 @@ st.markdown(f"""
         Last updated: {current_time}
     </div>
 """, unsafe_allow_html=True)
+
+
+
+
+
 
 
