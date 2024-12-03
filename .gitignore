@@ -1,10 +1,12 @@
 /__pycache__/
 /indices/__pycache__
-/indices/hjain1523-ee-ab492db538f9.json
-/indices/wrkfarm-415118-3652909893e8.json
 .DS_Store
 /Lib
 /Scripts
 /wrkFarm
 /pyvenv.cfg
-/indices
+apptest2.py
+chat_funcs.py
+langchaincolum3test.py
+resources/data.txt
+.env

@@ -2,10 +2,13 @@ from google.cloud import bigquery
 from datetime import datetime, timedelta
 import pandas as pd
 import os
+from dotenv import load_dotenv
+import json 
 
-# Define the BigQuery table details
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/jashvinuyeshwanth/Satellite_output/new_App/indices/wrkfarm-415118-3652909893e8.json"
-
+load_dotenv()
+creds_text = os.getenv("CREDS")
+creds_json = json.loads(creds_text)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = creds_json
 # Define the BigQuery table details
 table_id = 'wrkfarm-415118.Major_indices.indices_web'
 

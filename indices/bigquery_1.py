@@ -5,10 +5,14 @@ from indexes_tables import get_indices_data
 from datetime import datetime, timedelta
 import ee_auth
 import pandas as pd 
-
+from dotenv import load_dotenv 
+import json
 # Initialize Earth Engine
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/jashvinuyeshwanth/Satellite_output/new_App/indices/wrkfarm-415118-3652909893e8.json"
-ee.Initialize()
+
+load_dotenv()
+creds_text = os.getenv("CREDS")
+creds_json = json.loads(creds_text)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = creds_json
 
 # Define your point of interest (farmland)
 poi = ee.Geometry.Polygon([
